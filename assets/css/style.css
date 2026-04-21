@@ -37,8 +37,8 @@ main {
 }
 
 .game_canvas {
-    width: 960px;
-    height: 540px;
+    width: 100%;
+    height: auto;
     
     background-color: black;
 }
