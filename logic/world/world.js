@@ -1,6 +1,7 @@
 import Background from "./background/background.js"
-import Sharky from "./characters/sharky.js"
+import Entities from "./entities/entities.js"
 import Enemies from "./characters/enemies.js"
+import Sharky from "./characters/sharky.js"
 
 let camera_x = 0;
 
@@ -24,6 +25,7 @@ function loadWorld(ctx, canvas) {
     ctx.translate(-camera_x, 0);
 
     Background(ctx);
+    Entities(ctx);
     Enemies(ctx);
     ctx.restore();
     camera_x = Sharky(ctx, camera_x);
