@@ -1,8 +1,11 @@
 import Keyboard from "../../../lib/classes/keyboard/keyboard.class.js"
 import { RIGHT_BOUND, LEFT_BOUND } from "../../../lib/configs/camera/camera.configs.js";
+import { MAX_CAMERA } from "../../../lib/configs/world.configs.js";
 
 export function sharkyKbFunctions(sharky, camera) {
     if (Keyboard.RIGHT) {
+        if (camera > MAX_CAMERA) camera = MAX_CAMERA;
+
         sharky.x += sharky.speed
         if (sharky.x > RIGHT_BOUND) {
             sharky.x = RIGHT_BOUND;
@@ -14,8 +17,16 @@ export function sharkyKbFunctions(sharky, camera) {
     }
 
     if (Keyboard.LEFT) {
-        if (camera < 0) camera = 0;
-        
+        let minCamera = 0;
+
+        if (camera > minCamera) {
+            minCamera = camera;
+        }
+
+        if (camera < minCamera) {
+            camera = minCamera;
+        }
+
         sharky.x -= sharky.speed
         if (sharky.x < LEFT_BOUND) {
             sharky.x = LEFT_BOUND;
