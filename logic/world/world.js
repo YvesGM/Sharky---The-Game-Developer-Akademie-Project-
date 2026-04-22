@@ -17,5 +17,6 @@ function loadWorld(ctx, canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     Sharky(ctx);
+    
     requestAnimationFrame(() => loadWorld(ctx, canvas))
 }
