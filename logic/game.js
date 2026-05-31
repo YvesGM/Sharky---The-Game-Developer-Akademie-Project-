@@ -8,6 +8,9 @@ import { preloadGameImages } from "./world/image-preloader.js";
 
 let gameStarted = false;
 
+const AUTO_START_RESTART_KEY = "sharkyAutoStartAfterRestart";
+const AUDIO_MUTED_KEY = "sharkyAudioMuted";
+
 const blockedKeyCodes = [32, 37, 38, 39, 40];
 
 const keyboardMap = {
@@ -26,6 +29,7 @@ const keyboardMap = {
  * @returns {Promise<void>}
  */
 async function initializeSharky() {
+    initAudioMute();
     initMobileControls();
     initLegalUI();
     initSoundCreditsUI();
@@ -39,9 +43,35 @@ async function initializeSharky() {
     await preloadGameImages(updateLoadingScreen);
 
     hideLoadingScreen();
+
+    if (shouldAutoStartAfterRestart()) {
+        startGameAfterRestart();
+        return;
+    }
+
     showStartScreen();
 }
 
+/**
+ * Checks whether the game should start automatically after a restart reload.
+ *
+ * @returns {boolean} Whether the game should auto-start.
+ */
+function shouldAutoStartAfterRestart() {
+    return sessionStorage.getItem(AUTO_START_RESTART_KEY) === "true";
+}
+
+/**
+ * Starts the game automatically after a restart reload.
+ *
+ * @returns {void}
+ */
+function startGameAfterRestart() {
+    if (sessionStorage.getItem(AUTO_START_RESTART_KEY) !== "true") return;
+
+    sessionStorage.removeItem(AUTO_START_RESTART_KEY);
+    startGame();
+}
 
 /**
  * Starts the game once, hides the start screen, starts the audio and loads the canvas.
@@ -69,6 +99,124 @@ function loadAudio() {
     AUDIO_MANAGER.playMusic("background");
 }
 
+/**
+ * Initializes the persistent audio mute state and button.
+ *
+ * @returns {void}
+ */
+function initAudioMute() {
+    patchAudioManagerMute();
+    initMuteButton();
+    updateMuteButton();
+}
+
+
+/**
+ * Patches the audio manager so every sound respects the mute state.
+ *
+ * @returns {void}
+ */
+function patchAudioManagerMute() {
+    if (AUDIO_MANAGER.isMutePatched) return;
+
+    AUDIO_MANAGER.isMuted = getStoredAudioMuteState();
+    AUDIO_MANAGER.originalPlay = AUDIO_MANAGER.play.bind(AUDIO_MANAGER);
+    AUDIO_MANAGER.originalPlayMusic = AUDIO_MANAGER.playMusic.bind(AUDIO_MANAGER);
+
+    AUDIO_MANAGER.play = (...args) => {
+        if (AUDIO_MANAGER.isMuted) return;
+
+        AUDIO_MANAGER.originalPlay(...args);
+    };
+
+    AUDIO_MANAGER.playMusic = (...args) => {
+        if (AUDIO_MANAGER.isMuted) return;
+
+        AUDIO_MANAGER.originalPlayMusic(...args);
+    };
+
+    AUDIO_MANAGER.setMuted = setAudioMutedState;
+    AUDIO_MANAGER.isMutePatched = true;
+
+    if (AUDIO_MANAGER.isMuted) {
+        AUDIO_MANAGER.stopAllMusic();
+    }
+}
+
+
+/**
+ * Initializes the mute button click event.
+ *
+ * @returns {void}
+ */
+function initMuteButton() {
+    const muteButton = document.getElementById("muteButton");
+
+    if (!muteButton) return;
+
+    muteButton.addEventListener("click", toggleAudioMute);
+}
+
+
+/**
+ * Toggles the audio mute state.
+ *
+ * @returns {void}
+ */
+function toggleAudioMute() {
+    const shouldMute = !AUDIO_MANAGER.isMuted;
+
+    AUDIO_MANAGER.setMuted(shouldMute);
+
+    if (!shouldMute) {
+        AUDIO_MANAGER.play("buttonClick");
+    }
+}
+
+
+/**
+ * Sets and stores the audio mute state.
+ *
+ * @param {boolean} shouldMute - Whether audio should be muted.
+ * @returns {void}
+ */
+function setAudioMutedState(shouldMute) {
+    AUDIO_MANAGER.isMuted = shouldMute;
+    localStorage.setItem(AUDIO_MUTED_KEY, String(shouldMute));
+
+    if (shouldMute) {
+        AUDIO_MANAGER.stopAllMusic();
+    }
+
+    updateMuteButton();
+}
+
+
+/**
+ * Returns the stored audio mute state.
+ *
+ * @returns {boolean} Whether audio is muted.
+ */
+function getStoredAudioMuteState() {
+    return localStorage.getItem(AUDIO_MUTED_KEY) === "true";
+}
+
+
+/**
+ * Updates the mute button text and visual state.
+ *
+ * @returns {void}
+ */
+function updateMuteButton() {
+    const muteButton = document.getElementById("muteButton");
+
+    if (!muteButton) return;
+
+    muteButton.textContent = AUDIO_MANAGER.isMuted ? "Sound: Off" : "Sound: On";
+    muteButton.setAttribute("aria-pressed", String(AUDIO_MANAGER.isMuted));
+    muteButton.classList.toggle("is_muted", AUDIO_MANAGER.isMuted);
+}
+
 
 /**
  * Reloads the current page to restart the game.
@@ -77,6 +225,7 @@ function loadAudio() {
  */
 function restartGame() {
     AUDIO_MANAGER.play("buttonClick");
+    sessionStorage.setItem(AUTO_START_RESTART_KEY, "true");
     window.location.reload();
 }
 

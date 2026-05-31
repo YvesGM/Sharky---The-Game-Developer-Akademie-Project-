@@ -76,6 +76,7 @@ The game includes:
 - Device-pixel-ratio-aware canvas scaling
 
 ### UI
+- Loading screen
 - Start screen
 - Game over screen
 - Win screen
@@ -119,15 +120,15 @@ The game ends when Sharky loses all health or when the final boss is defeated.
 ## Controls
 
 ### Keyboard
-| Key | Action |
-| --- | --- |
-| Arrow Up | Move up |
-| Arrow Down | Move down |
-| Arrow Left | Move left |
-| Arrow Right | Move right |
-| Space | Bubble attack |
-| D | Fin attack |
-| R | Restart game |
+| Key         | Action        |
+| ----------- | ------------- |
+| Arrow Up    | Move up       |
+| Arrow Down  | Move down     |
+| Arrow Left  | Move left     |
+| Arrow Right | Move right    |
+| Space       | Bubble attack |
+| D           | Fin attack    |
+| R           | Restart game  |
 
 ### Mobile / Touch
 The game includes on-screen mobile controls:
@@ -170,10 +171,20 @@ No external JavaScript framework is required.
 │   │   ├── audio/
 │   │   ├── background/
 │   │   ├── characters/
+│   │   │   ├── sharky.class.js
+│   │   │   ├── sharky/
+│   │   │   └── enemies/
+│   │   │       ├── boss/
+│   │   │       │   └── functions/
+│   │   │       ├── jellyfish/
+│   │   │       ├── pufferfish/
+│   │   │       └── functions/
 │   │   ├── entities/
 │   │   ├── hud/
 │   │   ├── keyboard/
 │   │   └── world/
+│   │       ├── movable-objects.class.js
+│   │       └── movable-objects/
 │   ├── configs/
 │   │   ├── audio/
 │   │   ├── background/
@@ -191,6 +202,7 @@ No external JavaScript framework is required.
         ├── background/
         ├── characters/
         ├── entities/
+        ├── functions/
         ├── hud/
         ├── keyboard/
         ├── legals/
@@ -298,7 +310,6 @@ This keeps Sharky visible while the background, enemies, collectibles and barrie
 ### Collision System
 The game uses rectangular hitboxes for collision detection.
 Collisions are checked between:
-
 - Sharky and enemies
 - Sharky and collectibles
 - Sharky and barriers
@@ -361,7 +372,6 @@ HUD graphics are handled through reusable HUD bar classes and dedicated HUD stor
 
 ### Audio System
 Audio is handled through a central `AudioManagerClass`.
-
 The audio manager provides:
 - `play(soundName)`
 - `playMusic(soundName)`
@@ -447,14 +457,15 @@ This project was created as an educational and portfolio project.
 - Add persistent high score storage
 - Add accessibility improvements
 - Add touch-control scaling options
-- Add loading screen for large assets
+- Improve loading screen visuals and transition effects
 - Add automated linting and formatting setup
 - Add unit-like tests for collision helper functions
 
 ---
 
 ## Project Status
-The project already includes the core gameplay loop, player mechanics, enemies, collectibles, HUD, audio, UI overlays and final boss logic.
+The project includes the complete core gameplay loop, player mechanics, enemy systems, collectibles, HUD, audio handling, UI overlays, legal/credits modal, loading screen and final boss logic.
+The current version is prepared for academy review and portfolio presentation. Remaining improvements would mainly focus on additional polish, balancing and optional feature extensions.
 
 Current focus areas:
 - Gameplay polish

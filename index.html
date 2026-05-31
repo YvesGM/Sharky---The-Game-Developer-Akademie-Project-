@@ -34,7 +34,9 @@
                         <p id="loadingText">0%</p>
                     </div>
                 </div>
+
                 <canvas id="gameCanvas" class="game_canvas"></canvas>
+
 
                 <div id="startScreen" class="game_overlay d_none">
                     <img id="startScreenImage" class="start_screen" alt="Start Screen">
@@ -63,10 +65,16 @@
                 </div>
 
                 <button id="legalButton" class="legal_button">Impressum & Credits</button>
-
             </div>
 
             <!-- Mobile Controls -->
+            <div id="orientationOverlay" class="orientation_overlay">
+                <div class="orientation_box">
+                    <div class="orientation_icon">↻</div>
+                    <p>Bitte drehe dein Handy nach rechts, um Sharky zu spielen.</p>
+                </div>
+            </div>
+
             <div class="mobile_controls">
                 <div class="mobile_dpad">
                     <button type="button" data-key="UP">▲</button>
@@ -123,6 +131,12 @@
 
             </div>
         </section>
+
+
+        <button type="button" id="muteButton" class="mute_button" aria-pressed="false">
+            Sound: On
+        </button>
+
         <div id="legalModal" class="legal_modal d_none">
             <div class="legal_modal_content">
                 <button id="legalCloseButton" class="legal_close_button">×</button>

@@ -1,8 +1,8 @@
 .legal_button {
     position: absolute;
     right: 18px;
-    bottom: 18px;
-    z-index: 20;
+    top: 18px;
+    z-index: 50;
 
     padding: 10px 16px;
 

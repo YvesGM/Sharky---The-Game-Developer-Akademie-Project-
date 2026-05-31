@@ -173,6 +173,43 @@
     margin: 0;
 }
 
+.mute_button {
+    position: fixed;
+    top: clamp(16px, 3vw, 18px);
+    right: clamp(18px, 3vw, 28px);
+    z-index: 80;
+
+    padding: 12px 18px;
+
+    font-family: "Luckiest Guy", Arial, sans-serif;
+    font-size: clamp(12px, 1.4vw, 16px);
+    font-weight: 400;
+    letter-spacing: 1px;
+
+    color: white;
+    background:
+        linear-gradient(180deg, rgba(49, 91, 132, 0.96), rgba(28, 62, 101, 0.96));
+    border: 2px solid rgba(255, 255, 255, 0.58);
+    border-radius: 14px;
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+    cursor: pointer;
+}
+
+.mute_button:hover {
+    filter: brightness(1.08);
+}
+
+.mute_button:active {
+    transform: scale(0.96) translateY(1px);
+}
+
+.mute_button.is_muted {
+    opacity: 0.76;
+}
+
 @media (max-width: 900px),
 (max-height: 570px) {
 
@@ -259,6 +296,14 @@
     }
 }
 
+@media (max-width: 700px) {
+
+    .mute_button {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+}
+
 @media (max-width: 400px) {
 
     .mobile_controls button {
@@ -284,4 +329,146 @@
         pointer-events: auto;
     }
 
+}
+
+.orientation_overlay {
+    display: none;
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 700px) and (orientation: portrait) {
+
+    .orientation_overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+
+        padding: 28px;
+
+        background:
+            radial-gradient(circle at 50% 28%, rgba(111, 255, 236, 0.24), transparent 18rem),
+            linear-gradient(180deg, rgba(3, 32, 70, 0.94), rgba(0, 8, 22, 0.96));
+    }
+
+    .orientation_box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        max-width: 320px;
+        padding: 28px 24px;
+        gap: 16px;
+
+        text-align: center;
+        color: white;
+        background:
+            linear-gradient(180deg, rgba(10, 48, 88, 0.88), rgba(0, 18, 42, 0.92));
+        border: 2px solid rgba(255, 255, 255, 0.58);
+        border-radius: 26px;
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+
+    .orientation_icon {
+        font-size: 64px;
+        line-height: 1;
+        transform: rotate(90deg);
+    }
+
+    .orientation_box p {
+        margin: 0;
+
+        font-family: "Luckiest Guy", Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        line-height: 1.25;
+        text-shadow: 0 3px 0 rgba(0, 0, 0, 0.32);
+    }
+}
+
+@media (hover: none) and (pointer: coarse) and (min-width: 700px) and (min-height: 572px) {
+
+    .game_layout {
+        display: none;
+    }
+
+    .game_section {
+        justify-content: center;
+        padding-bottom: clamp(110px, 14vh, 170px);
+    }
+
+    .game_wrapper {
+        width: min(92vw, 1280px, calc((100dvh - 230px) * 16 / 9));
+    }
+
+    .mobile_controls {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: clamp(24px, 5vh, 64px);
+        z-index: 30;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        padding: 0 clamp(34px, 8vw, 110px);
+        pointer-events: none;
+        user-select: none;
+        touch-action: none;
+    }
+
+    .mobile_controls button {
+        pointer-events: auto;
+        min-width: 76px;
+        min-height: 64px;
+
+        font-family: "Luckiest Guy", Arial, sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
+
+        color: #ffffff;
+        background:
+            linear-gradient(180deg, rgba(113, 255, 236, 0.78), rgba(28, 128, 203, 0.72));
+        border: 1px solid rgba(255, 255, 255, 0.42);
+        border-radius: 18px;
+        box-shadow:
+            0 8px 18px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .mobile_controls button:active {
+        transform: scale(0.96);
+        background:
+            linear-gradient(180deg, rgba(113, 255, 236, 0.92), rgba(28, 128, 203, 0.86));
+    }
+
+    .mobile_dpad {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .mobile_dpad div {
+        display: flex;
+        gap: 10px;
+    }
+
+    .mobile_actions {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .mobile_actions button {
+        min-width: 118px;
+    }
 }

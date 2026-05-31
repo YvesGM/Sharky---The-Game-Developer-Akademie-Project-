@@ -10,6 +10,7 @@ import { UI_IMAGES } from "../../../lib/storage/hud/game-menu.storage.js";
  * @returns {void}
  */
 export function initGameUI({ onStart, onRestart, onFullscreen }) {
+    hideImpressumButton();
     initGameImages();
     initGameButtons(onStart, onRestart, onFullscreen);
     initGameEndEvents();
@@ -23,6 +24,7 @@ export function initGameUI({ onStart, onRestart, onFullscreen }) {
  */
 export function hideStartScreen() {
     document.getElementById("startScreen")?.classList.add("d_none");
+    hideImpressumButton();
 }
 
 
@@ -33,6 +35,7 @@ export function hideStartScreen() {
  */
 export function showStartScreen() {
     document.getElementById("startScreen")?.classList.remove("d_none");
+    showImpressumButton();
 }
 
 
@@ -75,6 +78,7 @@ export function updateLoadingScreen(progress) {
 export function showGameOverScreen(event) {
     updateScore("gameOverScore", event.detail);
     document.getElementById("gameOverScreen")?.classList.remove("d_none");
+    showImpressumButton();
 }
 
 
@@ -87,6 +91,7 @@ export function showGameOverScreen(event) {
 export function showWinScreen(event) {
     updateScore("winScore", event.detail);
     document.getElementById("winScreen")?.classList.remove("d_none");
+    showImpressumButton();
 }
 
 
@@ -252,4 +257,23 @@ function setImage(id, src) {
     if (!image) return;
 
     image.src = src;
+}
+
+/**
+ * Shows the impressum button.
+ *
+ * @returns {void}
+ */
+function showImpressumButton() {
+    document.getElementById("legalButton")?.classList.remove("d_none");
+}
+
+
+/**
+ * Hides the impressum button.
+ *
+ * @returns {void}
+ */
+function hideImpressumButton() {
+    document.getElementById("legalButton")?.classList.add("d_none");
 }
